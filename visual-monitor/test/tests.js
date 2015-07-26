@@ -26,6 +26,17 @@ var capsConfig = {
     'os_version' : '7',
     'resolution' : '1024x768'
   },
+  'iphone5': {
+    'browser' : 'Chrome',
+    'browser_version' : '42.0',
+    'os' : 'OS X',
+    'os_version' : 'Yosemite',
+    'chromeOptions': {
+      'mobileEmulation': {
+        'deviceName': 'Apple iPhone 5'
+      }
+    }
+  }
 };
 
 var selectedCaps = process.env.SELECTED_CAPS || undefined;
@@ -62,6 +73,8 @@ describe('Visual monitor testing', function() {
             '.product img',
             // Newsletter.
             '.newsletter img',
+            // Facebook box.
+            '.fb-like-box'
           ],
         remove: [
           // Product title.
