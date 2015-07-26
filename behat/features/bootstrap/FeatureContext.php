@@ -33,7 +33,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
   public function iAddMyPersonalInfo() {
     // Wait for the "Personal info" overlay to appear.
     $this->iWaitForCssElement('#fbBoxLiner');
-
     $this->getSession()->switchToIFrame('fbContent');
 
     $element = $this->getSession()->getPage()->find('css', '#RadDatePicker1_popupButton');
@@ -70,17 +69,19 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $element = $this->getSession()->getPage()->find('css', '#SetSessionButton');
     $element->click();
 
-    // Wait for overlay with buttons.
-    $this->iWaitForCssElement('.popupcart_button');
 
-    $element = $this->getSession()->getPage()->find('css', '.popupcart_button');
-    $element->click();
+    // We can simply reload the page.
+    $this->getSession()->wait(2000);
+    $this->getSession()->reload();
+
   }
 
   /**
    * @Then I should see the item added to the cart
    */
   public function iShouldSeeTheItemAddedToTheCart() {
+    $this->iWaitForCssElement('#iframecart');
+
     $this->getSession()->switchToIFrame('iframecart');
     $this->waitFor(function($context) {
       try {
