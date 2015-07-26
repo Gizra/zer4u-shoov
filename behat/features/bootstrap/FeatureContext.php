@@ -80,6 +80,8 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
 //     print $this->getSession()->evaluateScript($script);
 
 
+    // Get the 3rd element, as clicking on the first one seems to click the
+    // wrong element and cause an error.
     $element = $this->getSession()->getPage()->find('css', '#searchbox3_DropDown .rcbItem:nth-child(3)');
     $element->click();
 
@@ -91,15 +93,11 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $element = $this->getSession()->getPage()->find('css', '#SetSessionButton');
     $element->click();
 
-    sleep(5);
-
     // Wait for overlay with buttons.
     $this->iWaitForCssElement('.popupcart_button');
 
     $element = $this->getSession()->getPage()->find('css', '.popupcart_button');
     $element->click();
-
-    sleep(5);
   }
 
   /**
