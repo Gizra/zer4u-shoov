@@ -36,11 +36,17 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
 
     $this->getSession()->switchToIFrame('fbContent');
 
-    $element = $this->getSession()->getPage()->find('css', '#RadDatePicker1_dateInput');
-    $element->setValue('26/01/2016');
+    $element = $this->getSession()->getPage()->find('css', '#RadDatePicker1_popupButton');
+    $element->click();
 
-    $element = $this->getSession()->getPage()->find('css', '#RadDatePicker1_dateInput');
-    $element->setValue('26/01/2016');
+    // Go to next dates.
+    $element = $this->getSession()->getPage()->find('css', '.rcFastNext');
+    $element->click();
+    $element->click();
+
+    // Select first enabled date.
+    $element = $this->getSession()->getPage()->find('css', 'td.rcOtherMonth');
+    $element->click();
 
     $element = $this->getSession()->getPage()->find('css', '#searchbox2');
     $element->setValue('תל אביב-יפו');
@@ -48,21 +54,52 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $element = $this->getSession()->getPage()->find('css', '#searchbox3_Input');
     $element->click();
 
-    $key = '2';
-    $script = "jQuery.event.trigger({ type : 'keypress', which : '" . $key . "' });";
-    $this->getSession()->evaluateScript($script);
+    $this->iWaitForCssElement('#searchbox3_DropDown li.rcbItem');
+
+
+//     $script = "
+//     (function(){
+//   var element = Document.getElementById('searchbox3_Input');
+//
+//   element.focus();
+//
+//   var evt = document.createEvent('KeyboardEvent');
+//   evt.initKeyEvent ('keypress', true, true, window,
+//                 false, false, false, false,
+//                 40, 0);
+//   element.dispatchEvent(evt);
+//
+//   var evt = document.createEvent('KeyboardEvent');
+//   evt.initKeyEvent ('keypress', true, true, window,
+//                 false, false, false, false,
+//                 13, 0);
+//   element.dispatchEvent(evt);
+//
+// })();";
+//
+//     print $this->getSession()->evaluateScript($script);
+
+
+    $element = $this->getSession()->getPage()->find('css', '#searchbox3_DropDown .rcbItem:nth-child(3)');
+    $element->click();
+
 
     $element = $this->getSession()->getPage()->find('css', '#HOMENUMBER');
     $element->setValue('5');
 
+
     $element = $this->getSession()->getPage()->find('css', '#SetSessionButton');
     $element->click();
+
+    sleep(5);
 
     // Wait for overlay with buttons.
     $this->iWaitForCssElement('.popupcart_button');
 
     $element = $this->getSession()->getPage()->find('css', '.popupcart_button');
     $element->click();
+
+    sleep(5);
   }
 
   /**
