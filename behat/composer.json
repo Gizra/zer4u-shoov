@@ -1,0 +1,10 @@
+{
+  "name": "Behat tests for http://www.zer4u.co.il",
+  "description": "Functional testing for http://www.zer4u.co.il site.",
+  "require": {
+    "drupal/drupal-extension": "~3.0"
+  },
+  "config": {
+    "bin-dir": "bin/"
+  }
+}
