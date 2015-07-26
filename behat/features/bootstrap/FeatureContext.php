@@ -70,25 +70,18 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $element = $this->getSession()->getPage()->find('css', '#SetSessionButton');
     $element->click();
 
-    sleep(2);
+    // Wait for overlay with buttons.
+    $this->iWaitForCssElement('.popupcart_button');
 
-
-    $this->getSession()->reload();
-
-    // $this->iWaitForCssElement('#fbBoxLiner');
-    // $this->getSession()->switchToIFrame('fbContent');
-    //
-    // // Wait for overlay with buttons.
-    // $this->iWaitForCssElement('.popupcart_button');
-    //
-    // $element = $this->getSession()->getPage()->find('css', '.popupcart_button');
-    // $element->click();
+    $element = $this->getSession()->getPage()->find('css', '.popupcart_button');
+    $element->click();
   }
 
   /**
    * @Then I should see the item added to the cart
    */
   public function iShouldSeeTheItemAddedToTheCart() {
+    $this->getSession()->switchToIFrame('iframecart');
     $this->waitFor(function($context) {
       try {
         if (!$element = $context->getSession()->getPage()->find('css', '.cart_bg')) {
@@ -128,11 +121,11 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    * @param $fn
    *   A callable to invoke.
    * @param int $timeout
-   *   The timeout period. Defaults to 10 seconds.
+   *   The timeout period. Defaults to 15 seconds.
    *
    * @throws Exception
    */
-  private function waitFor($fn, $timeout = 10000) {
+  private function waitFor($fn, $timeout = 15000) {
     $start = microtime(true);
     $end = $start + $timeout / 1000.0;
     while (microtime(true) < $end) {
