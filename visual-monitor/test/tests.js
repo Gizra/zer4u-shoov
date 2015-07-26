@@ -26,18 +26,6 @@ var capsConfig = {
     'os_version' : '7',
     'resolution' : '1024x768'
   },
-  'iphone5': {
-    'project': projectName,
-    'browser' : 'Chrome',
-    'browser_version' : '42.0',
-    'os' : 'OS X',
-    'os_version' : 'Yosemite',
-    'chromeOptions': {
-      'mobileEmulation': {
-        'deviceName': 'Apple iPhone 5'
-      }
-    }
-  }
 };
 
 var selectedCaps = process.env.SELECTED_CAPS || undefined;
@@ -69,7 +57,7 @@ describe('Visual monitor testing', function() {
         exclude:
           [
             // Top slider.
-            '.wowslider-container1',
+            '.main_baner',
             // Product.
             '.product img',
             // Newsletter.
@@ -77,11 +65,11 @@ describe('Visual monitor testing', function() {
           ],
         remove: [
           // Product title.
-          'product b',
+          '.clearfix b',
           // Sale.
           '.labelImage',
         ],
-        screenWidth: selectedCaps == 'chrome' ? [960, 1200] : undefined,
+        screenWidth: selectedCaps == 'chrome' ? [960, 1200] : undefined
       }, shoovWebdrivercss.processResults)
       .call(done);
   });
