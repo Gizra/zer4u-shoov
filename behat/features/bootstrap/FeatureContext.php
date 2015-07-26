@@ -23,7 +23,7 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $this->iWaitForCssElement('#addCart');
 
     // Add to cart.
-    $element = $this->getSession()->getPage()->find('css', '#addCart');
+    $element = $this->getSession()->getPage()->find('css', '#addCart img');
     $element->click();
   }
 
@@ -32,7 +32,12 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
    */
   public function iAddMyPersonalInfo() {
     // Wait for the "Personal info" overlay to appear.
-    $this->iWaitForCssElement('#fbBox');
+    $this->iWaitForCssElement('#fbBoxLiner');
+
+    $this->getSession()->switchToIFrame('fbContent');
+
+    $element = $this->getSession()->getPage()->find('css', '#RadDatePicker1_dateInput');
+    $element->setValue('26/01/2016');
 
     $element = $this->getSession()->getPage()->find('css', '#RadDatePicker1_dateInput');
     $element->setValue('26/01/2016');
@@ -41,7 +46,11 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $element->setValue('תל אביב-יפו');
 
     $element = $this->getSession()->getPage()->find('css', '#searchbox3_Input');
-    $element->setValue('2184');
+    $element->click();
+
+    $key = '2';
+    $script = "jQuery.event.trigger({ type : 'keypress', which : '" . $key . "' });";
+    $this->getSession()->evaluateScript($script);
 
     $element = $this->getSession()->getPage()->find('css', '#HOMENUMBER');
     $element->setValue('5');
