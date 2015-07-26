@@ -16,18 +16,43 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
   }
 
   /**
-   * @When I select size and add to cart
+   * @When I select item and add to cart
    */
-  public function iSelectSizeAndAddToCart() {
-    // Wait for the "XS" size to appear
-    $this->iWaitForCssElement('#select_785');
-
-    // Select the smallest size.
-    $element = $this->getSession()->getPage()->find('css', '#select_785');
-    $element->selectOption('2270');
+  public function iSelectItemAndAddToCart() {
+    // Wait for the "Add to cart" button to appear.
+    $this->iWaitForCssElement('#addCart');
 
     // Add to cart.
-    $element = $this->getSession()->getPage()->find('css', '#btn-addtocart');
+    $element = $this->getSession()->getPage()->find('css', '#addCart');
+    $element->click();
+  }
+
+  /**
+   * @When I add my personal info
+   */
+  public function iAddMyPersonalInfo() {
+    // Wait for the "Personal info" overlay to appear.
+    $this->iWaitForCssElement('#fbBox');
+
+    $element = $this->getSession()->getPage()->find('css', '#RadDatePicker1_dateInput');
+    $element->setValue('26/01/2016');
+
+    $element = $this->getSession()->getPage()->find('css', '#searchbox2');
+    $element->setValue('תל אביב-יפו');
+
+    $element = $this->getSession()->getPage()->find('css', '#searchbox3_Input');
+    $element->setValue('2184');
+
+    $element = $this->getSession()->getPage()->find('css', '#HOMENUMBER');
+    $element->setValue('5');
+
+    $element = $this->getSession()->getPage()->find('css', '#SetSessionButton');
+    $element->click();
+
+    // Wait for overlay with buttons.
+    $this->iWaitForCssElement('.popupcart_button');
+
+    $element = $this->getSession()->getPage()->find('css', '.popupcart_button');
     $element->click();
   }
 
@@ -37,8 +62,8 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
   public function iShouldSeeTheItemAddedToTheCart() {
     $this->waitFor(function($context) {
       try {
-        $element = $context->getSession()->getPage()->find('css', '#cart-count-num');
-        return $element->getText() == '(1)';
+        $element = $context->getSession()->getPage()->find('css', '.cart_bg');
+        return $element->getText() == '1';
       }
       catch (WebDriver\Exception $e) {
         if ($e->getCode() == WebDriver\Exception::NO_SUCH_ELEMENT) {
