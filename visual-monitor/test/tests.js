@@ -25,7 +25,7 @@ var capsConfig = {
     'os' : 'Windows',
     'os_version' : '7',
     'resolution' : '1024x768'
-  },
+  }
 };
 
 var selectedCaps = process.env.SELECTED_CAPS || undefined;
