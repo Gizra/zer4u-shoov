@@ -57,29 +57,6 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $this->iWaitForCssElement('#searchbox3_DropDown li.rcbItem');
 
 
-//     $script = "
-//     (function(){
-//   var element = Document.getElementById('searchbox3_Input');
-//
-//   element.focus();
-//
-//   var evt = document.createEvent('KeyboardEvent');
-//   evt.initKeyEvent ('keypress', true, true, window,
-//                 false, false, false, false,
-//                 40, 0);
-//   element.dispatchEvent(evt);
-//
-//   var evt = document.createEvent('KeyboardEvent');
-//   evt.initKeyEvent ('keypress', true, true, window,
-//                 false, false, false, false,
-//                 13, 0);
-//   element.dispatchEvent(evt);
-//
-// })();";
-//
-//     print $this->getSession()->evaluateScript($script);
-
-
     // Get the 3rd element, as clicking on the first one seems to click the
     // wrong element and cause an error.
     $element = $this->getSession()->getPage()->find('css', '#searchbox3_DropDown .rcbItem:nth-child(3)');
@@ -93,11 +70,19 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
     $element = $this->getSession()->getPage()->find('css', '#SetSessionButton');
     $element->click();
 
-    // Wait for overlay with buttons.
-    $this->iWaitForCssElement('.popupcart_button');
+    sleep(2);
 
-    $element = $this->getSession()->getPage()->find('css', '.popupcart_button');
-    $element->click();
+
+    $this->getSession()->reload();
+
+    // $this->iWaitForCssElement('#fbBoxLiner');
+    // $this->getSession()->switchToIFrame('fbContent');
+    //
+    // // Wait for overlay with buttons.
+    // $this->iWaitForCssElement('.popupcart_button');
+    //
+    // $element = $this->getSession()->getPage()->find('css', '.popupcart_button');
+    // $element->click();
   }
 
   /**
@@ -106,7 +91,9 @@ class FeatureContext extends MinkContext implements SnippetAcceptingContext {
   public function iShouldSeeTheItemAddedToTheCart() {
     $this->waitFor(function($context) {
       try {
-        $element = $context->getSession()->getPage()->find('css', '.cart_bg');
+        if (!$element = $context->getSession()->getPage()->find('css', '.cart_bg')) {
+          return FALSE;
+        }
         return $element->getText() == '1';
       }
       catch (WebDriver\Exception $e) {
