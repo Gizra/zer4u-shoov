@@ -25,18 +25,6 @@ var capsConfig = {
     'os' : 'Windows',
     'os_version' : '7',
     'resolution' : '1024x768'
-  },
-  'iphone5': {
-    'project': projectName,
-    'browser' : 'Chrome',
-    'browser_version' : '42.0',
-    'os' : 'OS X',
-    'os_version' : 'Yosemite',
-    'chromeOptions': {
-      'mobileEmulation': {
-        'deviceName': 'Apple iPhone 5'
-      }
-    }
   }
 };
 
@@ -66,9 +54,24 @@ describe('Visual monitor testing', function() {
       .url(baseUrl)
       .webdrivercss(testName + '.homepage', {
         name: '1',
-        exclude: [],
-        remove: [],
-        screenWidth: selectedCaps == 'chrome' ? [320, 640, 960, 1200] : undefined,
+        exclude:
+          [
+            // Top slider.
+            '.main_baner',
+            // Product.
+            '.product img',
+            // Newsletter.
+            '.newsletter img',
+            // Facebook box.
+            '.fb-like-box'
+          ],
+        remove: [
+          // Product title.
+          '.clearfix b',
+          // Sale.
+          '.labelImage',
+        ],
+        screenWidth: selectedCaps == 'chrome' ? [960, 1200] : undefined
       }, shoovWebdrivercss.processResults)
       .call(done);
   });
